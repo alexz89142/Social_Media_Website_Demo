@@ -1,0 +1,147 @@
+<html>
+
+<head>
+    <title>Custom Social Media Exhibition Website</title>
+    <link rel='stylesheet' type='text/css' href='style.css'>
+    <link rel="shortcut icon" href="favicon.ico"/>
+
+    <style>
+        #keypad{
+            position:absolute;
+            /*background-color: green;*/
+
+            height:34vh;
+            width:17.1vh;
+            display:inline-block;
+            margin-left:77vh;
+            margin-top:23vh;
+        }
+        #keypadDisplay{
+            text-align: left;
+            width:100%;
+            height:4vh;
+            margin-left: .6vh;
+            margin-top:.7vh;
+            /*background-color: black;*/
+        }
+        #keypadNumbers{
+            text-align: left;
+            margin-top:3.3vh;
+            margin-left:1.8vh;
+            width:79%;
+            height:25vh;
+            /*background-color:gray;*/
+        }
+        .keypadButton{
+            font-size: 0;
+            display: inline-block;
+            width:4.4vh;
+            height:4.2vh;
+            margin-bottom:.7vh;
+            /*background-color: blue;*/
+        }
+    </style>
+</head>
+
+<body>
+    <div id='snaccMachine'>
+        <div id='keypad'>
+            <div id='keypadDisplay'></div>
+
+            <div id='keypadNumbers'>
+                <div digit='A' class='keypadButton'></div><div digit='B' class='keypadButton'></div><div digit='C' class='keypadButton'></div>
+                <div digit='0' class='keypadButton'></div><div digit='1' class='keypadButton'></div><div digit='2' class='keypadButton'></div>
+                <div digit='3' class='keypadButton'></div><div digit='4' class='keypadButton'></div><div digit='5' class='keypadButton'></div>
+                <div digit='6' class='keypadButton'></div><div digit='7' class='keypadButton'></div><div digit='8' class='keypadButton'></div>
+                <div digit='9' class='keypadButton'></div><div digit='K' class='keypadButton'></div><div digit='E' class='keypadButton'></div> 
+            </div>
+        </div>
+
+        <img onclick="window.location.href = 'https://www.youtube.com/channel/'" class='lights' id="AA00" src='images/lights/AA00.png'>
+        <img onclick="window.location.href = 'https://twitter.com/'" class='lights' id="AA01" src='images/lights/AA00.png'>
+        <img onclick="window.location.href = 'https://instagram.com/'" class='lights' id="ab00" src='images/lights/AB00.png'>
+        <img class='lights' id="ab01" src='images/lights/AB01.png'>
+        <img class='lights' id="ac00" src='images/lights/AC00.png'>
+        <img class='lights' id="ac01" src='images/lights/AC00.png'>
+
+        <img class='objects' src='images/objects.png'>
+        <img id='snaccMachinePic' src="images/snackMachine.png">
+    </div>
+
+    <script>
+        //initialize keycode holder, get all buttons in an array and set to call input handler on click
+       var keypadCode="";
+       var buttons=document.getElementsByClassName('keypadButton')
+       for(var x=0;x<buttons.length;x++){
+           buttons[x].onclick=function(){
+            keypadInputHandler(this.getAttribute("digit"));
+           }
+       }
+       
+       SnaccMachineCenter();
+       window.addEventListener('resize', SnaccMachineCenter);
+
+       //Snack machine responsive margin
+       function SnaccMachineCenter(){
+           var snaccMachinePicWidth=document.getElementById("snaccMachinePic").height
+           if(snaccMachinePicWidth>window.innerWidth)
+               snaccMachine.style.marginLeft=(snaccMachinePicWidth - window.innerWidth)*-.38;
+           else
+               snaccMachine.style.marginLeft="0";
+       }
+       
+       //Keypad functions
+       //decides what to do based on keypad button value
+       function keypadInputHandler(keypadInput){
+            if(keypadInput=='E')
+                submitCode();
+            if(keypadInput=='K'){
+                keypadCode=keypadCode.substring(0,keypadCode.length-1);
+                displayCode();
+            }
+            else if(keypadInput!="K"&&keypadInput!="E"){
+                if(keypadCode.length<9)
+                    keypadCode+=keypadInput;
+                else
+                    keypadCode=(keypadCode.substring(0,keypadCode.length-1)+keypadInput);
+                
+                displayCode();
+            }
+            
+            console.log(keypadCode);
+       }
+       //decides what to do based on full keycode
+       function submitCode(){
+            switch(keypadCode){
+                case "AA00":
+                    document.getElementById('aa00').click(); break;
+                case "AA01":
+                    document.getElementById('aa01').click(); break;
+                case "420":
+                    alert("lmao");
+                default:
+                    console.log("submit code to database to check to see if it's a valid unused code and return result from server")
+            }
+       }
+       //updates display for the keypad
+       function displayCode(){
+           var digitDisplay=document.getElementById("keypadDisplay");
+           digitDisplay.innerHTML=""; //empty display
+
+            for(var y=0;y<keypadCode.length;y++){
+                var digitImage=document.createElement("img");
+                digitImage.src="images/keys/"+keypadCode[y]+".png";
+                digitImage.style.height='2.6vh';
+                digitImage.style.marginRight='.15vh';
+                digitDisplay.appendChild(digitImage);
+            }
+       }
+
+       /*todo
+       browser nav features on mobile are blocking parts of site
+       add mobile feature to zoom keypad on tap
+       */
+    </script>
+</body>
+
+</html>
